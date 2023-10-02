@@ -1,50 +1,49 @@
-#include <stdio.h>
+#include<stdio.h>
 
-void swap(int* a, int* b) {
-    int t = *a;
-    *a = *b;
-    *b = t;
+void quick(int a[],int lb,int ub)
+{
+    int pivot;
+    if(lb<ub)
+    {
+        pivot = partition(a,lb,ub);
+        quick(a,lb,pivot-1);
+        quick(a,pivot+1,ub);
+    }
 }
+int partition(int a[],int lb, int ub)
+{
+    int pivot,temp;
+    int i=lb;
+    int j=ub;
+    pivot=a[lb];
+    while(i<j)
+    {
+        while (a[i]<=pivot && i<ub)
+        
+            i++;
+            while(a[j]>pivot)
+            j--;
+        
+        if(i<j){
+            temp=a[i];
+            a[i]=a[j];
+            a[j]=temp;
 
-int partition(int arr[], int low, int high) {
-    int pivot = arr[high]; 
-    int i = (low - 1);    
-
-    for (int j = low; j <= high - 1; j++) {
-        if (arr[j] <= pivot) {
-            i++; 
-            swap(&arr[i], &arr[j]);
         }
+    } 
+        
+    a[lb]=a[j];
+    a[j]=pivot;
+    printf("%d\n",j);
+    return j;
     }
-
-    swap(&arr[i + 1], &arr[high]);
-    return (i + 1);
-}
-
-void quickSort(int arr[], int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
-
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+int main(){
+    int a[]={45,12,5,78,19,2,56,1,62};
+    int low=0;
+    int high=8;
+    quick(a,low,high);
+    printf("Sorted array is\n");
+    for(int i=0;i<9;i++){
+       printf("\n%d",a[i]);
     }
-}
-
-int main() {
-    int arr[] = {64, 34, 25, 12, 22, 11, 90};
-    int n = sizeof(arr) / sizeof(arr[0]);
-
-    printf("Original array: ");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-
-    quickSort(arr, 0, n - 1);
-
-    printf("\nSorted array: ");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-
-    return 0;
 }
